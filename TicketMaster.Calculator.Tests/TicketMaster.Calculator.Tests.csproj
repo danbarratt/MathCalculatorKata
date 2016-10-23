@@ -44,10 +44,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="about_decimal_addition.cs" />
+    <Compile Include="CalculatorEvaluteTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TicketMaster.Calculator.Core\TicketMaster.Calculator.Core.csproj">
+      <Project>{a8b25780-7a29-4908-9745-1fcb0b318e70}</Project>
+      <Name>TicketMaster.Calculator.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
