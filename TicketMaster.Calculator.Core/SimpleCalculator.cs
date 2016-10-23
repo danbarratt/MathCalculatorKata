@@ -8,15 +8,13 @@ namespace TicketMaster.Calculator.Core
     {
         public object Evaluate(string expression)
         {
-            Debug.WriteLine("Evaluateding: " + expression);
-
             ExpressionEvaluator evaluator = new ExpressionEvaluator(new MathsGrammar());
 
             object result = evaluator.Evaluate(expression);
 
             if (result is double)
             {
-                result = Convert.ToDecimal(result);
+                result = Math.Round((double) result, 10);
             }
 
             Debug.WriteLine("Evaluated <{0}> as <{1}> <{2}>", expression, result, result.GetType().Name);
