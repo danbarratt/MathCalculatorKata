@@ -46,7 +46,9 @@
   <ItemGroup>
     <Compile Include="about_decimal_addition.cs" />
     <Compile Include="about_decimal_division.cs" />
+    <Compile Include="about_decimal_exponent.cs" />
     <Compile Include="about_decimal_multiplication.cs" />
+    <Compile Include="about_decimal_root.cs" />
     <Compile Include="about_decimal_subtraction.cs" />
     <Compile Include="CalculatorEvaluteTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

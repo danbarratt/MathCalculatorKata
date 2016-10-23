@@ -5,14 +5,13 @@ using Irony.Parsing;
 
 namespace TicketMaster.Calculator.Core
 {
-    [Language("MathsEvaluator")]
-    public class MathsGrammar : ExpressionEvaluatorGrammar
+    internal class MathsGrammar : ExpressionEvaluatorGrammar
     {
         public MathsGrammar()
         {
             //    Irony expression evaluator. Case-insensitive. Supports big integers, float data types, variables, assignments,
             //    arithmetic operations, augmented assignments (+=, -=), strings with embedded expressions; 
-            //    bool operations &,&&, |, ||; ternary '?:' operator.
+            //    bool operations &,&&, |, ||; operator.
 
             // 1. Terminals
             var number = new NumberLiteral("number");
@@ -27,11 +26,7 @@ namespace TicketMaster.Calculator.Core
             var templateSettings = new StringTemplateSettings(); //by default set to Ruby-style settings 
             templateSettings.ExpressionRoot = Expr; //this defines how to evaluate expressions inside template
 
-            //String literal with embedded expressions  ------------------------------------------------------------------
-            var stringLit = new StringLiteral("string", "\"", StringOptions.AllowsAllEscapes | StringOptions.IsTemplate);
-            stringLit.AddStartEnd("'", StringOptions.AllowsAllEscapes | StringOptions.IsTemplate);
-            stringLit.AstConfig.NodeType = typeof(StringTemplateNode);
-            stringLit.AstConfig.Data = templateSettings;
+            
             
             this.SnippetRoots.Add(Expr);
             
@@ -49,13 +44,15 @@ namespace TicketMaster.Calculator.Core
             var Program = new NonTerminal("Program", typeof(StatementListNode));
 
             // 3. BNF rules
-            Expr.Rule = Term | UnExpr | BinExpr;
-            Term.Rule = number | ParExpr | stringLit | identifier;
+            Expr.Rule = Term | UnExpr | BinExpr ;
+            Term.Rule = number | ParExpr | identifier;
             ParExpr.Rule = "(" + Expr + ")";
+            
+            UnOp.Rule = ToTerm("+") | "-" | "√";
             UnExpr.Rule = UnOp + Term + ReduceHere();
-            UnOp.Rule = ToTerm("+") | "-" | "!";
+
             BinExpr.Rule = Expr + BinOp + Expr;
-            BinOp.Rule = ToTerm("+") | "-" | "*" | "/" | "**" | "==" | "<" | "<=" | ">" | ">=" | "!=" | "&&" | "||" | "&" | "|";
+            BinOp.Rule = ToTerm("+") | "-" | "*" | "/" | "**" | "==" | "<" | "<=" | ">" | ">=" | "!=" | "&&" | "||" | "&" | "|" | "√";
             Statement.Rule = Expr | Empty;
             ArgList.Rule = MakeStarRule(ArgList, comma, Expr);
             Program.Rule = MakePlusRule(Program, NewLine, Statement);
@@ -67,7 +64,6 @@ namespace TicketMaster.Calculator.Core
             RegisterOperators(30, "+", "-");
             RegisterOperators(40, "*", "/");
             RegisterOperators(50, Associativity.Right, "**");
-            RegisterOperators(60, "!");
 
             // For precedence to work, we need to take care of one more thing: BinOp. 
             //For BinOp which is or-combination of binary operators, we need to either 
