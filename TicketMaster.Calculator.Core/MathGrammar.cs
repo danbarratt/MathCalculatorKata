@@ -1,5 +1,4 @@
 ﻿using System;
-using Irony.Interpreter;
 using Irony.Interpreter.Ast;
 using Irony.Interpreter.Evaluator;
 using Irony.Parsing;
@@ -17,21 +16,25 @@ namespace TicketMaster.Calculator.Core
 
             // 1. Terminals
             var number = new NumberLiteral("number");
-            //Let's allow big integers (with unlimited number of digits):
-            number.DefaultIntTypes = new TypeCode[] { TypeCode.Int32, TypeCode.Int64, NumberLiteral.TypeCodeBigInt };
+            number.DefaultIntTypes = new TypeCode[] { TypeCode.Double };
+
             var identifier = new IdentifierTerminal("identifier");
             
             var comma = ToTerm(",");
+
+            var Expr = new NonTerminal("Expr"); //declare it here to use in template definition 
+
+            var templateSettings = new StringTemplateSettings(); //by default set to Ruby-style settings 
+            templateSettings.ExpressionRoot = Expr; //this defines how to evaluate expressions inside template
 
             //String literal with embedded expressions  ------------------------------------------------------------------
             var stringLit = new StringLiteral("string", "\"", StringOptions.AllowsAllEscapes | StringOptions.IsTemplate);
             stringLit.AddStartEnd("'", StringOptions.AllowsAllEscapes | StringOptions.IsTemplate);
             stringLit.AstConfig.NodeType = typeof(StringTemplateNode);
-            var Expr = new NonTerminal("Expr"); //declare it here to use in template definition 
-            var templateSettings = new StringTemplateSettings(); //by default set to Ruby-style settings 
-            templateSettings.ExpressionRoot = Expr; //this defines how to evaluate expressions inside template
-            this.SnippetRoots.Add(Expr);
             stringLit.AstConfig.Data = templateSettings;
+            
+            this.SnippetRoots.Add(Expr);
+            
             //--------------------------------------------------------------------------------------------------------
 
             // 2. Non-terminals
@@ -40,8 +43,6 @@ namespace TicketMaster.Calculator.Core
             var ParExpr = new NonTerminal("ParExpr");
             var UnExpr = new NonTerminal("UnExpr", typeof(UnaryOperationNode));
             var ArgList = new NonTerminal("ArgList", typeof(ExpressionListNode));
-            var FunctionCall = new NonTerminal("FunctionCall", typeof(FunctionCallNode));
-            var IndexedAccess = new NonTerminal("IndexedAccess", typeof(IndexedAccessNode));
             var UnOp = new NonTerminal("UnOp");
             var BinOp = new NonTerminal("BinOp", "operator");
             var Statement = new NonTerminal("Statement");
@@ -49,7 +50,7 @@ namespace TicketMaster.Calculator.Core
 
             // 3. BNF rules
             Expr.Rule = Term | UnExpr | BinExpr;
-            Term.Rule = number | ParExpr | stringLit | FunctionCall | identifier | IndexedAccess;
+            Term.Rule = number | ParExpr | stringLit | identifier;
             ParExpr.Rule = "(" + Expr + ")";
             UnExpr.Rule = UnOp + Term + ReduceHere();
             UnOp.Rule = ToTerm("+") | "-" | "!";
@@ -57,10 +58,6 @@ namespace TicketMaster.Calculator.Core
             BinOp.Rule = ToTerm("+") | "-" | "*" | "/" | "**" | "==" | "<" | "<=" | ">" | ">=" | "!=" | "&&" | "||" | "&" | "|";
             Statement.Rule = Expr | Empty;
             ArgList.Rule = MakeStarRule(ArgList, comma, Expr);
-            FunctionCall.Rule = Expr + PreferShiftHere() + "(" + ArgList + ")";
-            FunctionCall.NodeCaptionTemplate = "call #{0}(...)";
-            IndexedAccess.Rule = Expr + PreferShiftHere() + "[" + Expr + "]";
-
             Program.Rule = MakePlusRule(Program, NewLine, Statement);
 
             this.Root = Program;       // Set grammar root
@@ -71,6 +68,7 @@ namespace TicketMaster.Calculator.Core
             RegisterOperators(40, "*", "/");
             RegisterOperators(50, Associativity.Right, "**");
             RegisterOperators(60, "!");
+
             // For precedence to work, we need to take care of one more thing: BinOp. 
             //For BinOp which is or-combination of binary operators, we need to either 
             // 1) mark it transient or 2) set flag TermFlags.InheritPrecedence

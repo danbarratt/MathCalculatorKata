@@ -60,11 +60,10 @@ namespace TicketMaster.Calculator.Tests
     
     public class about_decimal_division : CalculatorEvaluteTest
     {
-        [Ignore("WIP")]
         [Test]
         public void divide_integer_by_integer()
         {
-            Assert.That(EvaluateWithCalculator("100 / 21"), Is.EqualTo(5.25));
+            Assert.That(EvaluateWithCalculator("85 / 20"), Is.EqualTo(4.25));
         }
 
         // TEST: 100 / 21 	= 5.25
