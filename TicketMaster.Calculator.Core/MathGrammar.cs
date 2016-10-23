@@ -12,7 +12,7 @@ namespace TicketMaster.Calculator.Core
         public MathsGrammar()
         {
             //    Irony expression evaluator. Case-insensitive. Supports big integers, float data types, variables, assignments,
-            //    arithmetic operations, augmented assignments (+=, -=), inc/dec (++,--), strings with embedded expressions; 
+            //    arithmetic operations, augmented assignments (+=, -=), strings with embedded expressions; 
             //    bool operations &,&&, |, ||; ternary '?:' operator.
 
             // 1. Terminals
@@ -39,42 +39,26 @@ namespace TicketMaster.Calculator.Core
             var BinExpr = new NonTerminal("BinExpr", typeof(BinaryOperationNode));
             var ParExpr = new NonTerminal("ParExpr");
             var UnExpr = new NonTerminal("UnExpr", typeof(UnaryOperationNode));
-            
             var ArgList = new NonTerminal("ArgList", typeof(ExpressionListNode));
             var FunctionCall = new NonTerminal("FunctionCall", typeof(FunctionCallNode));
-            var MemberAccess = new NonTerminal("MemberAccess", typeof(MemberAccessNode));
             var IndexedAccess = new NonTerminal("IndexedAccess", typeof(IndexedAccessNode));
-            var ObjectRef = new NonTerminal("ObjectRef"); // foo, foo.bar or f['bar']
             var UnOp = new NonTerminal("UnOp");
             var BinOp = new NonTerminal("BinOp", "operator");
-            var PrefixIncDec = new NonTerminal("PrefixIncDec", typeof(IncDecNode));
-            var PostfixIncDec = new NonTerminal("PostfixIncDec", typeof(IncDecNode));
-            var IncDecOp = new NonTerminal("IncDecOp");
-            var AssignmentStmt = new NonTerminal("AssignmentStmt", typeof(AssignmentNode));
-            var AssignmentOp = new NonTerminal("AssignmentOp", "assignment operator");
             var Statement = new NonTerminal("Statement");
             var Program = new NonTerminal("Program", typeof(StatementListNode));
 
             // 3. BNF rules
-            Expr.Rule = Term | UnExpr | BinExpr | PrefixIncDec | PostfixIncDec;
-            Term.Rule = number | ParExpr | stringLit | FunctionCall | identifier | MemberAccess | IndexedAccess;
+            Expr.Rule = Term | UnExpr | BinExpr;
+            Term.Rule = number | ParExpr | stringLit | FunctionCall | identifier | IndexedAccess;
             ParExpr.Rule = "(" + Expr + ")";
             UnExpr.Rule = UnOp + Term + ReduceHere();
             UnOp.Rule = ToTerm("+") | "-" | "!";
             BinExpr.Rule = Expr + BinOp + Expr;
             BinOp.Rule = ToTerm("+") | "-" | "*" | "/" | "**" | "==" | "<" | "<=" | ">" | ">=" | "!=" | "&&" | "||" | "&" | "|";
-            PrefixIncDec.Rule = IncDecOp + identifier;
-            PostfixIncDec.Rule = identifier + PreferShiftHere() + IncDecOp;
-            IncDecOp.Rule = ToTerm("++") | "--";
-            
-            MemberAccess.Rule = Expr + PreferShiftHere() + "." + identifier;
-            AssignmentStmt.Rule = ObjectRef + AssignmentOp + Expr;
-            AssignmentOp.Rule = ToTerm("=") | "+=" | "-=" | "*=" | "/=";
-            Statement.Rule = AssignmentStmt | Expr | Empty;
+            Statement.Rule = Expr | Empty;
             ArgList.Rule = MakeStarRule(ArgList, comma, Expr);
             FunctionCall.Rule = Expr + PreferShiftHere() + "(" + ArgList + ")";
             FunctionCall.NodeCaptionTemplate = "call #{0}(...)";
-            ObjectRef.Rule = identifier | MemberAccess | IndexedAccess;
             IndexedAccess.Rule = Expr + PreferShiftHere() + "[" + Expr + "]";
 
             Program.Rule = MakePlusRule(Program, NewLine, Statement);
@@ -82,9 +66,7 @@ namespace TicketMaster.Calculator.Core
             this.Root = Program;       // Set grammar root
 
             // 4. Operators precedence
-            RegisterOperators(10, "?");
-            RegisterOperators(15, "&", "&&", "|", "||");
-            RegisterOperators(20, "==", "<", "<=", ">", ">=", "!=");
+            RegisterOperators(10, "&", "&&", "|", "||");
             RegisterOperators(30, "+", "-");
             RegisterOperators(40, "*", "/");
             RegisterOperators(50, Associativity.Right, "**");
@@ -98,14 +80,12 @@ namespace TicketMaster.Calculator.Core
             MarkPunctuation("(", ")", "?", ":", "[", "]");
             RegisterBracePair("(", ")");
             RegisterBracePair("[", "]");
-            MarkTransient(Term, Expr, Statement, BinOp, UnOp, IncDecOp, AssignmentOp, ParExpr, ObjectRef);
+            MarkTransient(Term, Expr, Statement, BinOp, UnOp, ParExpr);
 
             // 7. Syntax error reporting
-            MarkNotReported("++", "--");
             AddToNoReportGroup("(", "++", "--");
             AddToNoReportGroup(NewLine);
             AddOperatorReportGroup("operator");
-            AddTermsReportGroup("assignment operator", "=", "+=", "-=", "*=", "/=");
             
             // 9. Language flags. 
             // Automatically add NewLine before EOF so that our BNF rules work correctly when there's no final line break in source
