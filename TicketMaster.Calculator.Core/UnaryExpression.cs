@@ -6,14 +6,26 @@ namespace TicketMaster.Calculator.Core
     {
         public object Result { get; }
 
-        public UnaryExpression(object result, MathFormat inputFormat = MathFormat.Decimal)
+        public UnaryExpression(object value, MathFormat inputFormat = MathFormat.Decimal)
         {
-            if (result is double)
-            {
-                result = Math.Round((double)result, 10);
-            }
+            Result = value;
 
-            Result = result;
+            if (value is string)
+            {
+                if (inputFormat == MathFormat.Binary)
+                    Result = Convert.ToInt32((string)value, 2);
+                
+                else if (inputFormat == MathFormat.Octal)
+                    Result = Convert.ToInt32((string)value, 8);
+
+                else if (inputFormat == MathFormat.Hexadecimal)
+                    Result = Convert.ToInt32((string) value, 16);
+            }
+            
+            else if (value is double)
+            {
+                Result = Math.Round((double) value, 10);
+            }
         }
 
         public string FormatBinary()
@@ -33,7 +45,7 @@ namespace TicketMaster.Calculator.Core
 
         public string FormatHexadecimal()
         {
-            throw new NotImplementedException();
+            return Convert.ToString(Convert.ToInt32(Result), 16);
         }
 
         public override UnaryExpression Evaluate()

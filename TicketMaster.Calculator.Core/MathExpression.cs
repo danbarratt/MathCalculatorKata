@@ -9,5 +9,7 @@
     {
         Decimal = 0,
         Octal,
+        Binary,
+        Hexadecimal
     }
 }
