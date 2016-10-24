@@ -8,6 +8,9 @@ namespace TicketMaster.Calculator.Core
 
         public UnaryExpression(object value, MathFormat inputFormat = MathFormat.Decimal)
         {
+            InputString = Convert.ToString(value);
+            InputFormat = inputFormat;
+
             Result = value;
 
             if (value is string)
@@ -20,6 +23,9 @@ namespace TicketMaster.Calculator.Core
 
                 else if (inputFormat == MathFormat.Hexadecimal)
                     Result = Convert.ToInt32((string) value, 16);
+
+                else
+                    Result = Convert.ToDouble((string) value);
             }
             
             else if (value is double)

@@ -47,6 +47,7 @@
     <Compile Include="about_decimal_multiplication.cs" />
     <Compile Include="about_decimal_root.cs" />
     <Compile Include="about_decimal_subtraction.cs" />
+    <Compile Include="about_saving_and_recalling.cs" />
     <Compile Include="CalculatorEvaluteTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -58,6 +59,9 @@
       <Project>{a8b25780-7a29-4908-9745-1fcb0b318e70}</Project>
       <Name>TicketMaster.Calculator.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

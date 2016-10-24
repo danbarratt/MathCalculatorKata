@@ -5,24 +5,22 @@ namespace TicketMaster.Calculator.Core
 {
     public abstract class BinaryExpression : MathExpression
     {
-        private readonly string _input;
-        private readonly MathFormat _inputFormat;
-
         protected BinaryExpression(string input, MathFormat inputFormat)
         {
-            _input = input;
-            _inputFormat = inputFormat;
+            InputString = input;
+            InputFormat = inputFormat;
         }
 
         protected decimal[] Parameters
         {
             get
             {
-                var parameterStrings = _input.Split(Operator);
+                var parameterStrings = InputString.Split(Operator);
 
                 Func<string, decimal> decimalSelector = Convert.ToDecimal;
 
-                if (_inputFormat == MathFormat.Octal)
+                // TODO: Remove duplication with UnaryExpression constructor
+                if (InputFormat == MathFormat.Octal)
                 {
                     decimalSelector = paramString => Convert.ToInt32(paramString, 8);
                 }
