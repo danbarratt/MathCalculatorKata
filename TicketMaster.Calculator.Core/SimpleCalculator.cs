@@ -1,19 +1,34 @@
-﻿using System.Diagnostics;
-using Irony.Interpreter.Evaluator;
-
+﻿
 namespace TicketMaster.Calculator.Core
 {
     public class SimpleCalculator
     {
-        public ExpressionResult Evaluate(string expression)
+        public UnaryExpression Evaluate(string input, MathFormat inputFormat = MathFormat.Decimal)
         {
-            ExpressionEvaluator evaluator = new ExpressionEvaluator(new MathsGrammar());
+            MathExpression expression;
 
-            object result = evaluator.Evaluate(expression);
+            if (input.Contains("+"))
+            {
+                expression = new AddExpression(input, inputFormat);
+            }
+            else if (input.Contains("/"))
+            {
+                expression = new DivideExpression(input, inputFormat);
+            }
+            else if (input.Contains("*"))
+            {
+                expression = new MultiplyExpression(input, inputFormat);
+            }
+            else if (input.Contains("-"))
+            {
+                expression = new SubtractExpression(input, inputFormat);
+            }
+            else
+            {
+                expression = new UnaryExpression(input, inputFormat);
+            }
 
-            Debug.WriteLine("Evaluated <{0}> as <{1}> <{2}>", expression, result, result.GetType().Name);
-
-            return new ExpressionResult(result);
+            return expression.Evaluate();
         }
     }
 }

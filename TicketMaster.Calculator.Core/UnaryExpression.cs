@@ -2,11 +2,11 @@
 
 namespace TicketMaster.Calculator.Core
 {
-    public class ExpressionResult
+    public class UnaryExpression : MathExpression
     {
         public object Result { get; }
 
-        public ExpressionResult(object result)
+        public UnaryExpression(object result, MathFormat inputFormat = MathFormat.Decimal)
         {
             if (result is double)
             {
@@ -26,9 +26,19 @@ namespace TicketMaster.Calculator.Core
             return Convert.ToString(Convert.ToInt32(Result), 8);
         }
 
+        public string FormatDecimal()
+        {
+            return Convert.ToString(Result);
+        }
+
         public string FormatHexadecimal()
         {
             throw new NotImplementedException();
+        }
+
+        public override UnaryExpression Evaluate()
+        {
+            return this;
         }
     }
 }

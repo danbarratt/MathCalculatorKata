@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using TicketMaster.Calculator.Core;
 
 namespace TicketMaster.Calculator.Tests
 {
@@ -29,11 +30,11 @@ namespace TicketMaster.Calculator.Tests
         }
         
         [Test]
-        public void binary_expression_formatted_to_octal()
+        public void octal_binary_expression_formatted_to_decimall()
         {
-            var result = EvaluateToExpressionResult("654 - 546");
-
-            Assert.That(result.FormatOctal(), Is.EqualTo("70"));
+            var result = EvaluateToExpressionResult("654 - 546", MathFormat.Octal);
+            
+            Assert.That(result.Result, Is.EqualTo(70));
         }
     }
 }

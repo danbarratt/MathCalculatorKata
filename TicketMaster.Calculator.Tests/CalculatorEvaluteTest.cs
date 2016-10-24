@@ -11,9 +11,9 @@ namespace TicketMaster.Calculator.Tests
             return EvaluateToExpressionResult(expression).Result;
         }
 
-        protected ExpressionResult EvaluateToExpressionResult(string expression)
+        protected UnaryExpression EvaluateToExpressionResult(string expression, MathFormat inputFormat = MathFormat.Decimal)
         {
-            return new SimpleCalculator().Evaluate(expression);
+            return new SimpleCalculator().Evaluate(expression, inputFormat);
         }
     }
 }
