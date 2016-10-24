@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="about_output_formats.cs" />
     <Compile Include="about_decimal_addition.cs" />
     <Compile Include="about_decimal_division.cs" />
     <Compile Include="about_decimal_exponent.cs" />

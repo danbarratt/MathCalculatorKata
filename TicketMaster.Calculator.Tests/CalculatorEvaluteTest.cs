@@ -6,7 +6,12 @@ namespace TicketMaster.Calculator.Tests
     [TestFixture]
     public abstract class CalculatorEvaluteTest
     {
-        protected object EvaluateWithCalculator(string expression)
+        protected object EvaluateToValue(string expression)
+        {
+            return EvaluateToExpressionResult(expression).Result;
+        }
+
+        protected ExpressionResult EvaluateToExpressionResult(string expression)
         {
             return new SimpleCalculator().Evaluate(expression);
         }
