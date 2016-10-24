@@ -11,13 +11,15 @@ namespace TicketMaster.Calculator.Core
             InputFormat = inputFormat;
         }
 
-        protected decimal[] Parameters
+        protected double[] Parameters
         {
             get
             {
-                var parameterStrings = InputString.Split(Operator);
+                var parameterStrings = InputString.Split(new string[] { Operator }, StringSplitOptions.None);
 
-                Func<string, decimal> decimalSelector = Convert.ToDecimal;
+                Func<string, double> decimalSelector = param => string.IsNullOrWhiteSpace(param) 
+                    ? 0d 
+                    : Convert.ToDouble(Convert.ToDecimal(param));
 
                 // TODO: Remove duplication with UnaryExpression constructor
                 if (InputFormat == MathFormat.Octal)
@@ -29,6 +31,6 @@ namespace TicketMaster.Calculator.Core
             }
         }
 
-        public abstract char Operator { get; }
+        public abstract string Operator { get; }
     }
 }

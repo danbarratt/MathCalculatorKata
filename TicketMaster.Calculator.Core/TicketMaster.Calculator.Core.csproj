@@ -43,11 +43,13 @@
     <Compile Include="AddExpression.cs" />
     <Compile Include="BinaryExpression.cs" />
     <Compile Include="DivideExpression.cs" />
+    <Compile Include="ExponentExpression.cs" />
     <Compile Include="ExpressionRepository.cs" />
     <Compile Include="MathExpression.cs" />
     <Compile Include="MathFormat.cs" />
     <Compile Include="MultiplyExpression.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RootExpression.cs" />
     <Compile Include="SimpleCalculator.cs" />
     <Compile Include="SubtractExpression.cs" />
     <Compile Include="UnaryExpression.cs" />

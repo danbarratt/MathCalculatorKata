@@ -1,11 +1,11 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace TicketMaster.Calculator.Core
 {
     public class SimpleCalculator
     {
-        private ExpressionRepository _repository = new ExpressionRepository();
+        private readonly ExpressionRepository _repository = new ExpressionRepository();
+
 
         public MathExpression Parse(string input, MathFormat inputFormat = MathFormat.Decimal)
         {

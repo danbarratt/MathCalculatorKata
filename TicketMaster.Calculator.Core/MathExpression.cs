@@ -29,7 +29,17 @@
             {
                 return new SubtractExpression(input, inputFormat);
             }
-            
+
+            if (input.Contains("√"))
+            {
+                return new RootExpression(input, inputFormat);
+            }
+
+            if (input.Contains("exp"))
+            {
+                return new ExponentExpression(input, inputFormat);
+            }
+
             return new UnaryExpression(input, inputFormat);
         }
     }

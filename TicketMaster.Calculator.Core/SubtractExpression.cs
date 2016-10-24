@@ -1,4 +1,4 @@
-namespace TicketMaster.Calculator.Core
+﻿namespace TicketMaster.Calculator.Core
 {
     public class SubtractExpression : BinaryExpression
     {
@@ -11,6 +11,6 @@ namespace TicketMaster.Calculator.Core
             return new UnaryExpression(Parameters[0] - Parameters[1]);
         }
 
-        public override char Operator => '-';
+        public override string Operator => "-";
     }
 }
