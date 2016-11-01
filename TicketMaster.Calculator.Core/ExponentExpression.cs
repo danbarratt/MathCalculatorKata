@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TicketMaster.Calculator.Core
+namespace MathCalculator.Core
 {
     public class ExponentExpression : BinaryExpression
     {

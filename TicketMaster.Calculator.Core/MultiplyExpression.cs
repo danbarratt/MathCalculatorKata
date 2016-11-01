@@ -1,4 +1,4 @@
-namespace TicketMaster.Calculator.Core
+namespace MathCalculator.Core
 {
     public class MultiplyExpression : BinaryExpression
     {

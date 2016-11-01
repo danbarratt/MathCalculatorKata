@@ -1,7 +1,7 @@
-﻿using NUnit.Framework;
-using TicketMaster.Calculator.Core;
+﻿using MathCalculator.Core;
+using NUnit.Framework;
 
-namespace TicketMaster.Calculator.Tests
+namespace MathCalculator.Tests
 {
     [TestFixture]
     public abstract class CalculatorEvaluteTest

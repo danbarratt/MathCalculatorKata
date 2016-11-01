@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace TicketMaster.Calculator.Core
+namespace MathCalculator.Core
 {
     public abstract class BinaryExpression : MathExpression
     {

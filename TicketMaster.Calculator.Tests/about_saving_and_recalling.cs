@@ -1,9 +1,8 @@
-﻿using System.ComponentModel.Design;
-using System.Linq;
+﻿using System.Linq;
+using MathCalculator.Core;
 using NUnit.Framework;
-using TicketMaster.Calculator.Core;
 
-namespace TicketMaster.Calculator.Tests
+namespace MathCalculator.Tests
 {
     public class about_saving_and_recalling
     {

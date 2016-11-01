@@ -3,14 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketMaster.Calculator.Core", "TicketMaster.Calculator.Core\TicketMaster.Calculator.Core.csproj", "{A8B25780-7A29-4908-9745-1FCB0B318E70}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathCalculator.Core", "TicketMaster.Calculator.Core\MathCalculator.Core.csproj", "{A8B25780-7A29-4908-9745-1FCB0B318E70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketMaster.Calculator.Tests", "TicketMaster.Calculator.Tests\TicketMaster.Calculator.Tests.csproj", "{0A0E3124-F999-4C86-8CC6-0D007392BF65}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F7C19AED-6B31-4C7F-8C99-12767FADF8E1}"
-	ProjectSection(SolutionItems) = preProject
-		README.txt = README.txt
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathCalculator.Tests", "TicketMaster.Calculator.Tests\MathCalculator.Tests.csproj", "{0A0E3124-F999-4C86-8CC6-0D007392BF65}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

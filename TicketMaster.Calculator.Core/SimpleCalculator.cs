@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TicketMaster.Calculator.Core
+namespace MathCalculator.Core
 {
     public class SimpleCalculator
     {

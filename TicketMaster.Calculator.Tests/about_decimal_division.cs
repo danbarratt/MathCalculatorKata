@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace TicketMaster.Calculator.Tests
+namespace MathCalculator.Tests
 {
     public class about_decimal_division : CalculatorEvaluteTest
     {
